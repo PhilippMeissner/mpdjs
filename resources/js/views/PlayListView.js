@@ -378,14 +378,19 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 						this.volumeSet = true;
 					}
 				}
+        var fullTime = status.time.split(":", 2);
+        fullTime = parseInt(fullTime[1]);
+        var fullMinutes = Math.floor(fullTime / 60);
+        var fullSeconds = fullTime - fullMinutes * 60;
+        fullSeconds = (fullSeconds < 10 ? '0' : '') + fullSeconds;
 				var time = Math.floor(parseInt(status.time));
 				var minutes = Math.floor(time / 60);
 				var seconds = time - minutes * 60;
 				seconds = (seconds < 10 ? '0' : '') + seconds;
-				var playingText = "Playing ["+status.currentsong.title+"] "+minutes+":"+seconds;
+				var playingText = "Playing [" + status.currentsong.artist + " - " +status.currentsong.title + "] " + minutes + ":" + seconds + " / " + fullMinutes + ":" + fullSeconds;
 				$("#currentlyPlaying").text(playingText);
 			} else {
-				$("#currentlyPlaying").text("Playing []");
+				$("#currentlyPlaying").text("No song playing.");
 			}
 		},
 		_openWebSocket: function() {
