@@ -383,7 +383,7 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
         var fullMinutes = Math.floor(fullTime / 60);
         var fullSeconds = fullTime - fullMinutes * 60;
         fullSeconds = (fullSeconds < 10 ? '0' : '') + fullSeconds;
-				var time = Math.floor(parseInt(status.time));
+				var time = Math.floor(parseInt(status.elapsed));
 				var minutes = Math.floor(time / 60);
 				var seconds = time - minutes * 60;
 				seconds = (seconds < 10 ? '0' : '') + seconds;
