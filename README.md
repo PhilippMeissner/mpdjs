@@ -9,6 +9,7 @@ JavaScript optimization provided by Zazl (https://github.com/zazl/zazloptimizer)
 Install
 -------
 From git
+
 	git clone https://github.com/PhilippMeissner/mpdjs.git
 	cd mpdjs
 	npm install
