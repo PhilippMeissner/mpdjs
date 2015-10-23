@@ -60,7 +60,10 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 				"click #randomButton" : "randomPlayList",
 				"click #clearButton" : "clearPlayList",
 				"click #playingList li" : "removeSong",
-				"change #volume" : "changeVolume"
+				"change #volume" : "changeVolume",
+        // This is our event (click) Listener for an element
+        // with the id of 'test'. Use it for testing.
+        "click #test" : "testFunction"
 		    });	
 		},
 		initialize: function(options) {
@@ -335,6 +338,11 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 				}
         	}
 		},
+    // Assign this function to any of your button to test whether it gets
+    // picked up from this file.
+    testFunction: function() {
+      console.log("[/resources/views/PlayListView.js] testFunction called");
+    },
 		sendControlCmd: function(type) {
 			$.mobile.loading("show", { textVisible: false });
 			if (config.isDirect()) {
