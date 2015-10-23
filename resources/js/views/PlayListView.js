@@ -82,6 +82,7 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 			}
 		},
 		render: function(){
+      console.log("[/resources/views/PlayListView.js] render called");
 			$(this.el).html( this.headerTemplate + this.template + this.menuTemplate );
 		},
 		editPlayList: function() {
