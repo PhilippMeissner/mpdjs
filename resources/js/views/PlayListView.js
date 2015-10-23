@@ -29,15 +29,19 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 		events: function() {
 		    return _.extend({}, BaseView.prototype.events, {
 				"click #back" : function() {
+          console.log("[/resources/views/PlayListView.js] back clicked");
 					window.history.back();
 				},
 				"click #previous" : function() {
+          console.log("[/resources/views/PlayListView.js] previous clicked");
 					this.sendControlCmd("previous");
 				},
 				"click #next" : function() {
+          console.log("[/resources/views/PlayListView.js] next clicked");
 					this.sendControlCmd("next");
 				},
 				"click #playPause" : function() {
+          console.log("[/resources/views/PlayListView.js] " + this.state + " clicked");
 					if (this.state === "play") {
 						this.sendControlCmd("pause");
 					} else {
@@ -45,9 +49,11 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 					}
 				},
 				"click #stop" : function() {
+          console.log("[/resources/views/PlayListView.js] stop clicked");
 					this.sendControlCmd("stop");
 				},
 				"click #update" : function() {
+          console.log("[/resources/views/PlayListView.js] update clicked");
 					this.sendControlCmd("update");
 				},
 				"click #editButton" : "editPlayList",
