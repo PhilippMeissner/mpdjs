@@ -23,9 +23,10 @@ define(['backbone'], function(Backbone){
 			track: 0,
 			time: null,
 			file: null,
-			b64file: null
+			b64file: null,
+			test: "Hallo"
 		}
 	});
-	
+
 	return Song;
 });

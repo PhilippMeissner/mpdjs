@@ -517,6 +517,13 @@ MPDConnection.prototype = {
 			state: INITIAL
 		});
 	},
+	testFunction: function() {
+		this.queue.push({
+			cmd: "pause",
+			response: "",
+			state: INITIAL
+		});
+	},
 	addAlbumToPlayList: function(albumName, artist, cb) {
 		this.getSongsForAlbum(albumName, artist, function(songs) {
 			var cmd = "command_list_begin\n";

@@ -336,12 +336,32 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 						}
 					});
 				}
-        	}
+      }
 		},
     // Assign this function to any of your button to test whether it gets
     // picked up from this file.
     testFunction: function() {
       console.log("[/resources/views/PlayListView.js] testFunction called");
+      // Call listAll and pass a callback-function (alert)
+			$.mobile.loading("show", { textVisible: false });
+			if (!config.isDirect()) {
+				$.ajax({
+					url: config.getBaseUrl() + "/music/swap",
+					type: "POST",
+					headers: { "cache-control" : "no-cache"},
+					contentTypeString: "application/x-www-form-urlencoded; charset=utf-8",
+					datatype: "text",
+					success: function(data, textStatus, jqXHR) {
+						$.mobile.loading("hide");
+						console.log("Success!");
+					}.bind(this),
+					error: function(jqXHR, textStatus, errorThrown) {
+						$.mobile.loading("hide");
+						console.log("Error: " + textStatus);
+					}
+				});
+			}
+      console.log("[/resources/views/PlayListView.js] testFunction finished");
     },
 		sendControlCmd: function(type) {
 			$.mobile.loading("show", { textVisible: false });
