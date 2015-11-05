@@ -1,0 +1,97 @@
+Routes:
+
+TYPE  NAME        URL_AJAX                                URL_Router.js                                     Routes_Router.js
+
+PUT   addsong     => /music/playlist/song/:song           => "'playlist/song/:song': 'addsong'"
+PUT   addalbum    => /music/playlist/album/:album/:artist => "'playlist/album/:album/:artist': 'addalbum'"
+???   songs       => ???                                  => "'songs/:album/:artist': 'songs'"              || "'songs': 'songs'"
+???   albums      => ???                                  => "'albums/:artist': 'albums'"                   || "'albums': 'albums'"
+???   artists     => ???                                  => "'artists': 'artists'"
+???   search      => ???                                  => "'search': 'search'"
+???   connections => ???                                  => "'connections': 'connections'"
+???   settings    => ???                                  => "'settings': 'settings'"
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+Type    Name        URL                         Description
+
+POST    play        => /music/play              // Start Playlist
+POST    pause       => /music/pause             // Pause Playlist
+POST    previous    => /music/previous          // Previous Song
+POST    next        => /music/next              // Next Song
+POST    volume      => /music/volume/:vol       // Set volume
+PUT     randomPL    => /music/playlist/random   // Create random Playlist with 50 Songs
+DELETE  removeSong  => /music/playlist/:id      // Remove Song from Playlist
+DELETE  resetPL     => /music/playlist          // Reset the entire Playlist
+----------------------------------------------------------------------------------------------------------------------------------------------
+Genereller Ablauf eines Requests:
+*View.html -> *view.js -> mpdhandler -> mpdconnector -> MPD
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+Kommando an den MPD schicken:
+- Im *view einen Button erstellen
+- im *view.js einen Listener erstellen
+-> Den Listener auf eine Funktion zeigen lassen
+-> Die Funktion muss einen AJAX Request mit dem Type "GET", "PUT", "DELETE", "POST" ausführen
+*/
+$.ajax({
+  url: config.getBaseUrl() + "/music/play",
+  type: "POST",
+  headers: { "cache-control" : "no-cache"},
+  contentTypeString: "application/x-www-form-urlencoded; charset=utf-8",
+  datatype: "text",
+  success: function(data, textStatus, jqXHR) {
+    $.mobile.loading("hide");
+  }.bind(this),
+  error: function(jqXHR, textStatus, errorThrown) {
+    $.mobile.loading("hide");
+    console.log("Error: " + textStatus);
+  }*/
+  - Der Request wird vom mpdhandler.js aufgefangen
+  -> und weitergeleitet an den jeweiligen _handler* ("_handlePut", "_handleGet", ..)
+  -> Der Handler ruft die jeweilige Funktion aus der mpdconnector.js auf
+  (this.connection.play());
+  - Der mpdconnector pusht das Kommando auf die queue
+  - Falls eine Antwort vom MPD erwartet wird (eg. bei Gettern), so muss eine Processor-callback-funktion mit übergeben werden
+Normal:
+myFunction: function() {
+  this.queue.push({
+    cmd: "das MPD kommando",
+    response: "",
+    state: INITIAL
+  });
+}
+
+Bei Gettern:
+myFunction: function() {
+  this.queue.push({
+    cmd: "das Kommando",
+    process: processor,
+    cb: callback,
+    errorcb: errorcb,
+    response: "",
+    state: INITIAL
+  });
+}
+Wobei:
+var processor = function(data) {
+  var lines = this._lineSplit(data);
+  var status = {};
+  var line;
+  for (var i = 0; i < lines.length; i++) {
+    line = lines[i];
+    var key = line.substring(0, line.indexOf(':'));
+    var value = line.substring(line.indexOf(':')+2);
+    status[key] = value;
+  }
+  return status;
+}.bind(this);
+
+Und auch callback und errorcb callback-funktionen sind.
+
+Die Callback und ErrorCallback Funktionen können jederzeit optional mit übergeben werden.
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+Ladeindikator zeigen/verstecken:
+$.mobile.loading("hide");
+$.mobile.loading("show");
