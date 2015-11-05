@@ -1,22 +1,22 @@
 /*
 * The MIT License (MIT)
-* 
+*
 * Copyright (c) 2012 Richard Backhouse
-* 
+*
 * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 * to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
 * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-* 
+*
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-* 
+*
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 * DEALINGS IN THE SOFTWARE.
 */
 define([
-	'jquery', 
-	'backbone', 
+	'jquery',
+	'backbone',
 	'underscore',
 	'jquerymobile',
 	'models/ArtistList',
@@ -34,25 +34,25 @@ define([
 	'mpd/MPDClient',
 	'util/MessagePopup',
 	'applewatch/AppleWatchUtil'
-	], 
+	],
 function(
-	$, 
-	Backbone, 
-	_, 
-	mobile, 
-	ArtistList, 
-	AlbumList, 
-	SongList, 
-	PlayList, 
-	ArtistListView, 
-	AlbumListView, 
-	SongListView, 
-	PlayListView, 
-	SongSearchView, 
-	ConnectionListView, 
-	SettingsView, 
-	config, 
-	MPDClient, 
+	$,
+	Backbone,
+	_,
+	mobile,
+	ArtistList,
+	AlbumList,
+	SongList,
+	PlayList,
+	ArtistListView,
+	AlbumListView,
+	SongListView,
+	PlayListView,
+	SongSearchView,
+	ConnectionListView,
+	SettingsView,
+	config,
+	MPDClient,
 	MessagePopup
 ) {
 	window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
@@ -65,7 +65,7 @@ function(
 	            window.history.back();
 	            return false;
 	        });
-	        this.firstPage = true;			
+	        this.firstPage = true;
 	        this.on("route:addsong", function(song) {
 				$.mobile.loading("show", { textVisible: false });
 				if (config.isDirect()) {
@@ -187,7 +187,6 @@ function(
 				this.changePage(new SettingsView({}));
 			});
 			Backbone.history.start();
-			
 			var checkScroll = function(evt) {
 				var activePage = $(':mobile-pagecontainer').pagecontainer('getActivePage');
 				var screenHeight = $.mobile.getScreenHeight();
@@ -203,7 +202,6 @@ function(
 					}
 				}
 			}.bind(this);
-			
 			$(document).on("scrollstop", checkScroll);
 		},
 		fetchPlayList: function(statusJSON) {
@@ -289,6 +287,6 @@ function(
 			'': config.getStartPage()
 		}
 	});
-	
+
 	return Router;
 });

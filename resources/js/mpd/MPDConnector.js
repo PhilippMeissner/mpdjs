@@ -1,14 +1,14 @@
 /*
 * The MIT License (MIT)
-* 
+*
 * Copyright (c) 2014 Richard Backhouse
-* 
+*
 * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 * to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
 * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-* 
+*
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-* 
+*
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
@@ -73,9 +73,9 @@ MPDConnection.prototype = {
 				//this.connect();
 			}
 		}.bind(this));
-		
+
 		var data = "";
-		
+
 		SocketConnection.listen(function(buffer) {
 			data += buffer;
 			var lastChar = buffer.charAt(buffer.length-1);
@@ -149,7 +149,7 @@ MPDConnection.prototype = {
 				}
 			}
 		}.bind(this);
-		
+
 		var poller = function() {
 			processQueue();
 			setTimeout(poller, 500);
@@ -256,7 +256,7 @@ MPDConnection.prototype = {
 				var key = line.substring(0, line.indexOf(':'));
 				var value = line.substring(line.indexOf(':')+2);
 				status[key] = value;
-			}			
+			}
 			return status;
 		}.bind(this);
 		var callback = function(status) {
@@ -284,7 +284,7 @@ MPDConnection.prototype = {
 				var key = line.substring(0, line.indexOf(':'));
 				var value = line.substring(line.indexOf(':')+2);
 				stats[key] = value;
-			}			
+			}
 			return stats;
 		}.bind(this);
 		this.queue.push({
@@ -308,7 +308,7 @@ MPDConnection.prototype = {
 					currentsong.artist = lines[i].substring(ARTIST_PREFIX.length);
 				} else if (line.indexOf(ALBUM_PREFIX) === 0) {
 					currentsong.album = lines[i].substring(ALBUM_PREFIX.length);
-				} 
+				}
 			}
 			return currentsong;
 		}.bind(this);
@@ -376,7 +376,7 @@ MPDConnection.prototype = {
 						console.log(err);
 					}
 				}
-			}				
+			}
 			return songs;
 		}.bind(this);
 		var cmd = "find album \""+album.replace(/"/g, "\\\"")+"\"";
@@ -425,7 +425,7 @@ MPDConnection.prototype = {
 						console.log(err);
 					}
 				}
-			}				
+			}
 			return songs;
 		}.bind(this);
 		this.queue.push({
@@ -607,7 +607,7 @@ MPDConnection.prototype = {
 				if (line.indexOf(FILE_PREFIX) === 0) {
 					songs.push(line.substring(FILE_PREFIX.length));
 				}
-			}				
+			}
 			return songs;
 		}.bind(this);
 		var cmd = "search ";
@@ -654,7 +654,7 @@ MPDConnection.prototype = {
 		var minutes = Math.floor(time / 60);
 		var seconds = time - minutes * 60;
 		seconds = (seconds < 10 ? '0' : '') + seconds;
-		return minutes+":"+seconds; 
+		return minutes+":"+seconds;
 	}
 };
 

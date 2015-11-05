@@ -1,21 +1,21 @@
 /*
 * The MIT License (MIT)
-* 
+*
 * Copyright (c) 2012 Richard Backhouse
-* 
+*
 * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 * to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
 * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-* 
+*
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-* 
+*
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 * DEALINGS IN THE SOFTWARE.
 */
 define([
-		'jquery', 
+		'jquery',
 		'backbone',
 		'underscore',
 		'models/PlayList',
@@ -23,7 +23,7 @@ define([
 		'../uiconfig',
 		'./BaseView',
 		'../mpd/MPDClient',
-		'text!templates/PlayList.html'], 
+		'text!templates/PlayList.html'],
 function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template){
 	var View = BaseView.extend({
 		events: function() {
@@ -64,7 +64,7 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
         // This is our event (click) Listener for an element
         // with the id of 'test'. Use it for testing.
         "click #test" : "testFunction"
-		    });	
+		    });
 		},
 		initialize: function(options) {
 			options.header = {
@@ -95,14 +95,14 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 				$("#editButton").val("Edit");
 				$("#editButton").button("refresh");
 				this.playlist.each(function(song) {
-					$("#playingList").append('<li><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></li>');	
+					$("#playingList").append('<li><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></li>');
 				});
 			} else {
 				this.editing = true;
 				$("#editButton").val("Done");
 				$("#editButton").button("refresh");
 				this.playlist.each(function(song) {
-					$("#playingList").append('<li data-icon="minusIcon"><a href="#playlist" id="'+song.get("id")+'"><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></a></li>');	
+					$("#playingList").append('<li data-icon="minusIcon"><a href="#playlist" id="'+song.get("id")+'"><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></a></li>');
 				});
 			}
 			$("#playingList").listview('refresh');
@@ -116,40 +116,40 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 					transition : "pop"
 				}).bind("popupafterclose", function() {
 					$(this).remove();
-				});			
+				});
 				$popUp.addClass("ui-content");
 				$("<h3/>", {
 					text : "Random Playlist Type"
 				}).appendTo($popUp);
-			
+
 				$("<p/>", {
 					text : "Type:"
 				}).appendTo($popUp);
-			
+
 				var $select = $("<select/>", {
 					id : "type"
 				}).appendTo($popUp);
-				
+
 				var $artist = $("<option/>", {
 					value : "artist",
 				}).appendTo($select);
 				$artist.text("By Artist");
-				
+
 				var $album = $("<option/>", {
 					value : "album",
 				}).appendTo($select);
 				$album.text("By Album");
-				
+
 				var $title = $("<option/>", {
 					value : "title",
 				}).appendTo($select);
 				$title.text("By Title");
-				
+
 				var $genre = $("<option/>", {
 					value : "genre",
 				}).appendTo($select);
 				$genre.text("By Genre");
-				
+
 				if (config.getRandomPlaylistConfig().type === "artist") {
 					$artist.attr("selected", "true");
 				} if (config.getRandomPlaylistConfig().type === "album") {
@@ -159,20 +159,20 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 				} if (config.getRandomPlaylistConfig().type === "genre") {
 					$genre.attr("selected", "true");
 				}
-				
+
 				$select.selectmenu();
-				
+
 				$("<p/>", {
 					text : "Type Value:"
 				}).appendTo($popUp);
-				
+
 				$("<input/>", {
 					id : "typevalue",
 					type : "text",
 					value : config.getRandomPlaylistConfig().typevalue,
 					autocapitalize: "off"
 				}).appendTo($popUp);
-				
+
 				$("<a>", {
 					text : "Ok"
 				}).buttonMarkup({
@@ -187,7 +187,7 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 						this.randomPlayListRequest(type, typevalue);
 					}
 				}.bind(this)).appendTo($popUp);
-			
+
 				$("<a>", {
 					text : "Cancel"
 				}).buttonMarkup({
@@ -196,13 +196,13 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 				}).bind("click", function() {
 					$popUp.popup("close");
 				}).appendTo($popUp);
-			
+
 				$popUp.popup("open").trigger("create");
 			} else {
 				this.randomPlayListRequest();
 			}
 		},
-		randomPlayListRequest: function(type, typevalue) {	
+		randomPlayListRequest: function(type, typevalue) {
 			$.mobile.loading("show", { textVisible: false });
 			if (config.isDirect()) {
 				if (type) {
@@ -264,7 +264,7 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 			}
 		},
 		removeSong: function(evt) {
-			if (this.editing) {			
+			if (this.editing) {
 				$.mobile.loading("show", { textVisible: false });
 				if (config.isDirect()) {
 					MPDClient.removeSong(evt.target.id, function() {
@@ -299,9 +299,9 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 					$("#playingList li").remove();
 					this.playlist.each(function(song) {
 						if (this.editing) {
-							$("#playingList").append('<li data-icon="minusIcon"><a href="#playlist" id="'+song.get("id")+'"><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></a></li>');	
+							$("#playingList").append('<li data-icon="minusIcon"><a href="#playlist" id="'+song.get("id")+'"><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></a></li>');
 						} else {
-							$("#playingList").append('<li><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></li>');	
+							$("#playingList").append('<li><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></li>');
 						}
 					}.bind(this));
 					$("#playingList").listview('refresh');
@@ -367,7 +367,34 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 			}
 		},
 		showStatus: function(data) {
-			var status; 
+			var status;
+			//console.log(data);
+			/* data = {
+					"volume":"-1",
+					"repeat":"1",
+					"random":"1",
+					"single":"0",
+					"consume":"0",
+					"playlist":"2",
+					"playlistlength":"10",
+					"mixrampdb":"0.000000",
+					"state":"pause",
+					"xfade":"1",
+					"song":"0",
+					"songid":"1",
+					"time":"7:101",
+					"elapsed":"6.791",
+					"bitrate":"192",
+					"audio":"44100:24:2",
+					"nextsong":"3",
+					"nextsongid":"4",
+					"currentsong":{
+						"artist":"Linkin Park",
+						"title":"Wake-",
+						"album":"Minutes To Midnight"
+					}
+				}
+			*/
 			if (config.isDirect()) {
 				status = data;
 			} else {
@@ -393,6 +420,7 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 						this.volumeSet = true;
 					}
 				}
+				//console.log(status.currentsong);
         var fullTime = status.time.split(":", 2);
         fullTime = parseInt(fullTime[1]);
         var fullMinutes = Math.floor(fullTime / 60);
@@ -427,12 +455,12 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 		},
 		close: function() {
 			if (config.isDirect()) {
-				MPDClient.removeStatusListener(this.statusListener);				
+				MPDClient.removeStatusListener(this.statusListener);
 			} else {
 				this.ws.close();
 			}
 		}
 	});
-	
+
 	return View;
 });

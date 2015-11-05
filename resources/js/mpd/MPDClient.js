@@ -1,14 +1,14 @@
 /*
 * The MIT License (MIT)
-* 
+*
 * Copyright (c) 2014 Richard Backhouse
-* 
+*
 * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
 * to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
 * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-* 
+*
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-* 
+*
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
@@ -22,11 +22,11 @@ define(['./MPDConnector', '../uiconfig', '../util/MessagePopup'], function(MPDCo
 	var active = true;
 	var audio;
 	var streamurl;
-	
+
 	function errorHandler(err) {
 		MessagePopup.create("MPD Error", "Error : "+err);
 	}
-	
+
 	if (window.cordova) {
 		require(['deviceReady!'], function() {
 			SocketConnection.setActiveListener(function(status) {
@@ -40,7 +40,7 @@ define(['./MPDConnector', '../uiconfig', '../util/MessagePopup'], function(MPDCo
 			});
 		});
 	}
-	
+
 	function createConnection(cb) {
 		connection = new MPDConnector(config.getConnection().host, config.getConnection().port);
 		connection.connect(function(error) {
@@ -68,7 +68,7 @@ define(['./MPDConnector', '../uiconfig', '../util/MessagePopup'], function(MPDCo
 			cb();
 		});
 	}
-	
+
 	function createAudio() {
 		console.log("creating audio tag for "+streamurl);
 		audio = new Audio(streamurl);
@@ -110,7 +110,7 @@ define(['./MPDConnector', '../uiconfig', '../util/MessagePopup'], function(MPDCo
 		audio.addEventListener('suspend', eventListener, false);
 		audio.addEventListener('volumechange', eventListener, false);
 	}
-	
+
 	return {
 		isConnected: function() {
 			return connection === undefined ? false : true;
@@ -230,7 +230,7 @@ define(['./MPDConnector', '../uiconfig', '../util/MessagePopup'], function(MPDCo
 							}
 						}
 					}, errorHandler);
-				}				
+				}
 			}, errorHandler);
 		},
 		randomPlayListByType: function(type, typevalue, cb) {
@@ -251,6 +251,12 @@ define(['./MPDConnector', '../uiconfig', '../util/MessagePopup'], function(MPDCo
 			connection.setVolume(volume);
 			cb();
 		},
+    testFunction: function(cb) {
+      console.log("[/js/mpd/MPDClient.js] testFunction called!");
+      // FIXME: How to call function from connection.*?
+			//connection.play();
+      cb();
+    },
 		sendControlCmd: function(type, cb) {
 			if (type === "play") {
 				connection.play();
