@@ -30,6 +30,7 @@ define([
 	'views/SongSearchView',
 	'views/ConnectionListView',
 	'views/SettingsView',
+	'views/testView',
 	'uiconfig',
 	'mpd/MPDClient',
 	'util/MessagePopup',
@@ -51,6 +52,7 @@ function(
 	SongSearchView,
 	ConnectionListView,
 	SettingsView,
+	testView,
 	config,
 	MPDClient,
 	MessagePopup
@@ -59,6 +61,8 @@ function(
     	console.log('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber + ' Column: ' + column + ' StackTrace: ' +  errorObj);
     	MessagePopup.create('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber + ' Column: ' + column+ ' StackTrace: ' +  errorObj);
 	}
+
+
 	var Router = Backbone.Router.extend({
 		initialize: function() {
 			$('.back').on('click', function(event) {
@@ -119,6 +123,9 @@ function(
 	        		if (!proceed) return;
 		        	this.fetchPlayList();
 	        	}.bind(this));
+			});
+			this.on("route:test1", function() {
+				this.changePage(new testView());
 			});
 			this.on("route:songs", function(album, artist) {
 				if (artist === "null") {
@@ -227,6 +234,29 @@ function(
 				});
 			}.bind(this));
 		},
+		testqwe: function(statusJSON) {
+			this.checkForConnection(function() {
+				this.navigate("test1", {replace: true});
+				if (this.currentView) {
+					this.currentView.close();
+					this.currentView.remove();
+					this.currentView.unbind();
+				}
+				var playlist = new testView();
+				$.mobile.loading("show", { textVisible: false });
+				playlist.fetch({
+					success: function(collection, response, options) {
+		        		$.mobile.loading("hide");
+						this.currentView = new testView({})
+						this.changePage(this.currentView);
+					}.bind(this),
+					error: function(collection, xhr, options) {
+		        		$.mobile.loading("hide");
+						console.log("get playlist failed :"+xhr.status);
+					}
+				});
+			}.bind(this));
+		},
 	    changePage:function (page, dontCheck) {
 	    	this.currentPage = page;
 	    	function cp() {
@@ -284,6 +314,7 @@ function(
 			'search': 'search',
 			'connections': 'connections',
 			'settings': 'settings',
+			'test1' : 'test1',
 			'': config.getStartPage()
 		}
 	});

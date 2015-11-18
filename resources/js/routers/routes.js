@@ -20,7 +20,8 @@ define(function() {
         {href: "artists", label: "Artists"},
         {href: "albums", label: "Albums"},
         {href: "search", label: "Song Search"},
-        {href: "settings", label: "Settings"}
+        {href: "settings", label: "Settings"},
+				{href: "test1", label: "Test1"}
 	];
 
 	var connectionsMenuItem = {href: "connections", label: "Connections"};
