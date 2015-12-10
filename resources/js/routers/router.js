@@ -124,9 +124,6 @@ function(
 		        	this.fetchPlayList();
 	        	}.bind(this));
 			});
-			this.on("route:test1", function() {
-				this.changePage(new testView());
-			});
 			this.on("route:songs", function(album, artist) {
 				if (artist === "null") {
 					artist = undefined;
@@ -193,6 +190,9 @@ function(
 			this.on("route:settings", function() {
 				this.changePage(new SettingsView({}));
 			});
+			this.on("route:test1", function() {
+				this.changePage(new testView());
+			});
 			Backbone.history.start();
 			var checkScroll = function(evt) {
 				var activePage = $(':mobile-pagecontainer').pagecontainer('getActivePage');
@@ -224,7 +224,7 @@ function(
 				playlist.fetch({
 					success: function(collection, response, options) {
 		        		$.mobile.loading("hide");
-						this.currentView = new PlayListView({playlist: collection})
+						this.currentView = new PlayListView({playlist: collection});
 						this.changePage(this.currentView);
 					}.bind(this),
 					error: function(collection, xhr, options) {

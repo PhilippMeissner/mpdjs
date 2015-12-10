@@ -63,7 +63,8 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 				"change #volume" : "changeVolume",
         // This is our event (click) Listener for an element
         // with the id of 'test'. Use it for testing.
-        "click #test" : "testFunction"
+        "click #test" : "testFunction",
+				"click #upvote" : "upvote"
 		    });
 		},
 		initialize: function(options) {
@@ -95,7 +96,8 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 				$("#editButton").val("Edit");
 				$("#editButton").button("refresh");
 				this.playlist.each(function(song) {
-					$("#playingList").append('<li><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></li>');
+					$("#playingList").append('<li id="upvote" data-icon="star"><p style="white-space:normal">' + song.get("artist") + ' : ' + song.get("title") + '<span class="ui-li-count">' + song.get("time") + '</span></p></a></li>');
+					//$("#playingList").append('<li><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></li>');
 				});
 			} else {
 				this.editing = true;
@@ -340,13 +342,13 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 		},
     // Assign this function to any of your button to test whether it gets
     // picked up from this file.
-    testFunction: function() {
+    testFunction: function(evt) {
       console.log("[/resources/views/PlayListView.js] testFunction called");
       // Call listAll and pass a callback-function (alert)
 			$.mobile.loading("show", { textVisible: false });
 			if (!config.isDirect()) {
 				$.ajax({
-					url: config.getBaseUrl() + "/music/swap",
+					url: config.getBaseUrl() + "/music/test/",
 					type: "POST",
 					headers: { "cache-control" : "no-cache"},
 					contentTypeString: "application/x-www-form-urlencoded; charset=utf-8",
@@ -362,6 +364,31 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 				});
 			}
       console.log("[/resources/views/PlayListView.js] testFunction finished");
+    },
+    upvote: function(evt) {
+      console.log("[/resources/views/PlayListView.js] upvote called");
+      // Call listAll and pass a callback-function (alert)
+			$.mobile.loading("show", { textVisible: false });
+			if (!config.isDirect()) {
+				evt.preventDefault();
+				console.log(evt.target.id);
+				$.ajax({
+					url: config.getBaseUrl() + "/music/upvote/" + evt.target.id,
+					type: "POST",
+					headers: { "cache-control" : "no-cache"},
+					contentTypeString: "application/x-www-form-urlencoded; charset=utf-8",
+					datatype: "text",
+					success: function(data, textStatus, jqXHR) {
+						$.mobile.loading("hide");
+						console.log("Success!");
+					}.bind(this),
+					error: function(jqXHR, textStatus, errorThrown) {
+						$.mobile.loading("hide");
+						console.log("Error: " + textStatus);
+					}
+				});
+			}
+      console.log("[/resources/views/PlayListView.js] upvote finished");
     },
 		sendControlCmd: function(type) {
 			$.mobile.loading("show", { textVisible: false });

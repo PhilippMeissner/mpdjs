@@ -17,15 +17,17 @@
 define(['backbone', './Song', '../uiconfig', '../mpd/MPDClient', '../util/MessagePopup'], function(Backbone, Song, config, MPDClient, MessagePopup) {
 	var SongList = Backbone.Collection.extend({
 		initialize: function(options) {
+			console.log("[models/SongList.js] initialize called");
 			this.album = options.album;
 			this.artist = options.artist;
 		},
 		model: Song,
 		url: function() {
-			console.log("Song URL called lololol");
+			console.log("[models/SongList.js] url called");
 			return config.getBaseUrl()+"/music/songs/"+(this.album === undefined ? "" : encodeURIComponent(this.album))+(this.artist === undefined ? "" : "/"+encodeURIComponent(this.artist));
 		},
 		fetch: function(options) {
+			console.log("[models/SongList.js] fetch called");
 			if (config.isDirect()) {
 				MPDClient.getSongs(this.album, this.artist, function(songs) {
 					this.set(songs, options);
