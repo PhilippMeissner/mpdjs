@@ -303,7 +303,10 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 						if (this.editing) {
 							$("#playingList").append('<li data-icon="minusIcon"><a href="#playlist" id="'+song.get("id")+'"><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></a></li>');
 						} else {
-							$("#playingList").append('<li><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></li>');
+							console.log("fetchPlayList re-order playlinglist");
+							$("#playingList").append('<li id="upvote" data-icon="star"><p style="white-space:normal">' + song.get("artist") + ' : ' + song.get("title") + '<span class="ui-li-count">' + song.get("time") + '</span></p></a></li>');
+							// <li id="upvote" data-icon="star"><a id="<%= song.file %>"><p style="white-space:normal"><%= song.artist %>: <%= song.title %><span class="ui-li-count"><%= song.time %></span></p></a></li>
+							//$("#playingList").append('<li><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></li>');
 						}
 					}.bind(this));
 					$("#playingList").listview('refresh');
