@@ -8,7 +8,7 @@ define(['jquery'], function($) {
 				transition : "pop"
 			}).bind("popupafterclose", function() {
 				$(this).remove();
-			});			
+			});
 			$popUp.addClass("ui-content");
 			$("<h4/>", {
 		        text : title
@@ -31,7 +31,7 @@ define(['jquery'], function($) {
 				$popUp.popup("close");
 				if (cb) cb();
 			}).appendTo($popUp);
-			
+
 			if (showCancel) {
 				$("<a>", {
 					text : "Cancel"

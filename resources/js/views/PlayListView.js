@@ -23,8 +23,8 @@ define([
 		'../uiconfig',
 		'./BaseView',
 		'../mpd/MPDClient',
-		'text!templates/PlayList.html'],
-function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template){
+		'text!templates/PlayList.html', '../util/MessagePopup'],
+function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template, MessagePopup){
 	var View = BaseView.extend({
 		events: function() {
 		    return _.extend({}, BaseView.prototype.events, {
@@ -345,6 +345,7 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
     testFunction: function(evt) {
       console.log("[/resources/views/PlayListView.js] testFunction called");
       // Call listAll and pass a callback-function (alert)
+			// MessagePopup.createTopRightCorner("Suck it, bitch!");
 			$.mobile.loading("show", { textVisible: false });
 			if (!config.isDirect()) {
 				$.ajax({
