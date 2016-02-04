@@ -61,7 +61,7 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 				"click #clearButton" : "clearPlayList",
 				"click #playingList li" : "removeSong",
 				"change #volume" : "changeVolume",
-        // This is our event (click) Listener for an element
+        // This is our event (click) listener for an element
         // with the id of 'test'. Use it for testing.
         "click #test" : "testFunction",
 				"click #upvote" : "upvote"
@@ -69,7 +69,7 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 		},
 		initialize: function(options) {
 			options.header = {
-				title: "Play List"
+				title: "Playlist"
 			};
 			this.volumeSet = false;
 			this.constructor.__super__.initialize.apply(this, [options]);
@@ -96,14 +96,15 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 				$("#editButton").val("Edit");
 				$("#editButton").button("refresh");
 				this.playlist.each(function(song) {
-					$("#playingList").append('<li id="upvote" data-icon="star"><p style="white-space:normal">' + song.get("artist") + ' : ' + song.get("title") + '<span class="ui-li-count">' + song.get("time") + '</span></p></a></li>');
-					//$("#playingList").append('<li><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></li>');
+					// Done editing
+					$("#playingList").append('<li id="upvote" data-icon="star"><a data-songid="'+song.get("id")+'" id="' + song.get("file")+'"><p style="white-space:normal">' + song.get("artist") + ' : ' + song.get("title") + '<span class="ui-li-count">' + song.get("time") + '</span></p></a></li>');
 				});
 			} else {
 				this.editing = true;
 				$("#editButton").val("Done");
 				$("#editButton").button("refresh");
 				this.playlist.each(function(song) {
+					// Editing
 					$("#playingList").append('<li data-icon="minusIcon"><a href="#playlist" id="'+song.get("id")+'"><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></a></li>');
 				});
 			}
@@ -304,9 +305,8 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 							$("#playingList").append('<li data-icon="minusIcon"><a href="#playlist" id="'+song.get("id")+'"><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></a></li>');
 						} else {
 							console.log("fetchPlayList re-order playlinglist");
-							$("#playingList").append('<li id="upvote" data-icon="star"><p style="white-space:normal">' + song.get("artist") + ' : ' + song.get("title") + '<span class="ui-li-count">' + song.get("time") + '</span></p></a></li>');
-							// <li id="upvote" data-icon="star"><a id="<%= song.file %>"><p style="white-space:normal"><%= song.artist %>: <%= song.title %><span class="ui-li-count"><%= song.time %></span></p></a></li>
-							//$("#playingList").append('<li><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></li>');
+							// Check what PlayList.html uses and copy the layout accordingly.
+							$("#playingList").append('<li id="upvote" data-icon="star"><a data-songid="'+song.get("id")+'" id="' + song.get("file")+'"><p style="white-space:normal">' + song.get("artist") + ' : ' + song.get("title") + '<span class="ui-li-count">' + song.get("time") + '</span></p></a></li>');
 						}
 					}.bind(this));
 					$("#playingList").listview('refresh');
@@ -372,12 +372,13 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
     upvote: function(evt) {
       console.log("[/resources/views/PlayListView.js] upvote called");
       // Call listAll and pass a callback-function (alert)
+			var songid = $(evt.target).data("songid");
 			$.mobile.loading("show", { textVisible: false });
 			if (!config.isDirect()) {
 				evt.preventDefault();
 				console.log(evt.target.id);
 				$.ajax({
-					url: config.getBaseUrl() + "/music/upvote/" + evt.target.id,
+					url: config.getBaseUrl() + "/music/upvote/" + songid + "/" + evt.target.id,
 					type: "POST",
 					headers: { "cache-control" : "no-cache"},
 					contentTypeString: "application/x-www-form-urlencoded; charset=utf-8",
@@ -471,6 +472,20 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 						this.volumeSet = true;
 					}
 				}
+
+				// Check if song changed since last query
+				if(status.songid != this.lastSong) {
+					// lastSong changed --> We tell others about it.
+					// Do it like this:
+					// Request for mpdHandler -> Songhandler.deleteEntry(songid)
+					// MPD does not need to get called, because song gets consumed+priority therefore removed.
+					console.log("ID Changed from " + this.lastSong + " to " + status.songid);
+					this.lastSong = status.songid;
+				}
+
+
+
+
 				//console.log(status.currentsong);
         var fullTime = status.time.split(":", 2);
         fullTime = parseInt(fullTime[1]);
@@ -488,6 +503,7 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 			}
 		},
 		_openWebSocket: function() {
+			this.lastSong = "-1";
 			if (window.WebSocket) {
 				this.ws = new WebSocket(config.getWSUrl());
 			} else if (window.MozWebSocket) {

@@ -1,8 +1,8 @@
 <div data-role="content">
-	<div class="ui-body ui-body-e" id="currentlyPlaying">Playing []</div>
+	<div class="ui-body ui-body-e" id="currentlyPlaying">Playing: </div>
 	<div class="ui-field-contain">
 		<label for="volume" class="ui-hidden-accessible">Volume:</label>
-		<input type="range" name="slider" id="volume" value="25" min="0" max="100" data-highlight="true"></input>
+		<input type="range" name="slider" id="volume" value="75" min="75" max="100" data-highlight="true"></input>
 	</div>
 	<div data-role="collapsible" data-collapsed="false" data-inset="false">
 		<h3>PlayList</h3>
@@ -13,7 +13,7 @@
 		</div>
 		<ol id="playingList" data-role="listview" style="margin-top:0;">
 		<% _.each(playlist, function(song) { %>
-			<li id="upvote" data-icon="star"><a id="<%= song.file %>"><p style="white-space:normal"><%= song.artist %>: <%= song.title %><span class="ui-li-count"><%= song.time %></span></p></a></li>
+			<li id="upvote" data-icon="star"><a data-songid="<%= song.id %>" id="<%= song.file %>"><p style="white-space:normal"><%= song.artist %>: <%= song.title %><span class="ui-li-count"><%= song.time %></span></p></a></li>
 		<% }); %>
 		</ol>
 	</div>
