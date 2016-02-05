@@ -372,13 +372,13 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
     upvote: function(evt) {
       console.log("[/resources/views/PlayListView.js] upvote called");
       // Call listAll and pass a callback-function (alert)
-			var songid = $(evt.target).data("songid");
+			var songid = $(evt.target).closest("a").data("songid"); // Works
+			var id = $(evt.target).closest("a").attr("id");
 			$.mobile.loading("show", { textVisible: false });
 			if (!config.isDirect()) {
 				evt.preventDefault();
-				console.log(evt.target.id);
 				$.ajax({
-					url: config.getBaseUrl() + "/music/upvote/" + songid + "/" + evt.target.id,
+					url: config.getBaseUrl() + "/music/upvote/" + songid + "/" + id,
 					type: "POST",
 					headers: { "cache-control" : "no-cache"},
 					contentTypeString: "application/x-www-form-urlencoded; charset=utf-8",
