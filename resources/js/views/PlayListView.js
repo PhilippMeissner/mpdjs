@@ -373,9 +373,6 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
     upvote: function(evt) {
       console.log("[/resources/views/PlayListView.js] upvote called");
 
-
-			console.log(document.cookie);
-
 			// Get Cookie with key "uuid"
 			var cookie="";
     	var nameEQ = "uuid=";
@@ -385,10 +382,6 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
         while (c.charAt(0)==' ') c = c.substring(1,c.length);
         if (c.indexOf(nameEQ) == 0) cookie = c.substring(nameEQ.length,c.length);
     	}
-			console.log("cookie: " + cookie);
-
-
-			//console.log(cookie + " is trying to upvote.");
 
       // Call listAll and pass a callback-function (alert)
 			var songid = $(evt.target).closest("a").data("songid"); // Works
