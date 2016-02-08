@@ -14,6 +14,7 @@
 * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 * DEALINGS IN THE SOFTWARE.
 */
+
 define([
 		'jquery',
 		'backbone',
@@ -371,14 +372,32 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
     },
     upvote: function(evt) {
       console.log("[/resources/views/PlayListView.js] upvote called");
+
+
+			console.log(document.cookie);
+
+			// Get Cookie with key "uuid"
+			var cookie="";
+    	var nameEQ = "uuid=";
+    	var ca = document.cookie.split(';');
+    	for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) cookie = c.substring(nameEQ.length,c.length);
+    	}
+			console.log("cookie: " + cookie);
+
+
+			//console.log(cookie + " is trying to upvote.");
+
       // Call listAll and pass a callback-function (alert)
 			var songid = $(evt.target).closest("a").data("songid"); // Works
-			var id = $(evt.target).closest("a").attr("id");
+			var songinfo = $(evt.target).closest("a").attr("id");
 			$.mobile.loading("show", { textVisible: false });
 			if (!config.isDirect()) {
 				evt.preventDefault();
 				$.ajax({
-					url: config.getBaseUrl() + "/music/upvote/" + songid + "/" + id,
+					url: config.getBaseUrl() + "/music/upvote/" + songid + "/" + cookie + "/" + songinfo,
 					type: "POST",
 					headers: { "cache-control" : "no-cache"},
 					contentTypeString: "application/x-www-form-urlencoded; charset=utf-8",

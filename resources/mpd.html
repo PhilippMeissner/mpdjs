@@ -2,13 +2,36 @@
 <html class="ui-mobile-rendering">
 <head>
     <title>MiMaBox</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="Erik Falk, Patrick Wels, Philipp Meissner, Rick Fastenrath">
-    <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
-    <link rel="stylesheet" href="css/music.css" />
-  	<script type="text/javascript" src="loader/amd/zazl.js"></script>
+  <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
+  <link rel="stylesheet" href="css/music.css" />
+  <script type="text/javascript" src="js/client.min.js"></script>
+  <script type="text/javascript" src="loader/amd/zazl.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>
 </head>
 <body>
+  <script>
+
+    function readCookie(name) {
+      var nameEQ = name + "=";
+      var ca = document.cookie.split(';');
+      for(var i=0;i < ca.length;i++) {
+          var c = ca[i];
+          while (c.charAt(0)==' ') c = c.substring(1,c.length);
+          if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+      }
+      return null;
+    }
+
+    var client = new ClientJS();
+    // Unless a cookie exists, create a new one for the user.
+    if (readCookie("uuid") == null) {
+      var fingerprint = client.getFingerprint();
+
+      document.cookie = "uuid=" + fingerprint + ";";
+      console.log("Neu: " + fingerprint);
+    }
+  </script>
 </body>
 </html>

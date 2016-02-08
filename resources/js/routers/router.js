@@ -257,30 +257,30 @@ function(
 				});
 			}.bind(this));
 		},
-	    changePage:function (page, dontCheck) {
-	    	this.currentPage = page;
-	    	function cp() {
+	  changePage:function (page, dontCheck) {
+	  	this.currentPage = page;
+	  	function cp() {
 				$(page.el).attr('data-role', 'page');
 				page.render();
 				$('body').append($(page.el));
 				mobile.changePage($(page.el), {changeHash:false, reverse: false});
-	    	}
-	    	if (dontCheck) {
+	    }
+	    if (dontCheck) {
 				cp();
-	    	} else {
+	    } else {
 				this.checkForConnection(function() {
 					cp();
 				});
 			}
-	    },
-	    checkForConnection: function(cb) {
+	  },
+	  checkForConnection: function(cb) {
 			if (config.promptForConnection()) {
 				this.changePage(new ConnectionListView({}), true);
 			} else {
 				cb();
 			}
-	    },
-	    connectIfRequired: function(cb) {
+	  },
+	  connectIfRequired: function(cb) {
 	        if (config.isDirect() && !MPDClient.isConnected()) {
 	        	if (config.getConnections().length < 1) {
 	        		Backbone.history.navigate("connections", {replace: true});
