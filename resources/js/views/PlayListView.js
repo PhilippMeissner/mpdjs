@@ -24,8 +24,8 @@ define([
 		'../uiconfig',
 		'./BaseView',
 		'../mpd/MPDClient',
-		'text!templates/PlayList.html', '../util/MessagePopup'],
-function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template, MessagePopup){
+		'text!templates/PlayList.html', '../util/MessagePopup', '../../jquery.growl'],
+function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template, MessagePopup, growl){
 	var View = BaseView.extend({
 		events: function() {
 		    return _.extend({}, BaseView.prototype.events, {
@@ -381,9 +381,11 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
         if (c.indexOf(nameEQ) == 0) cookie = c.substring(nameEQ.length,c.length);
     	}
 
-      // Call listAll and pass a callback-function (alert)
-			var songid = $(evt.target).closest("a").data("songid"); // Works
+			var songid = $(evt.target).closest("a").data("songid");
 			var songinfo = $(evt.target).closest("a").attr("id");
+
+			$.growl.notice({ title: "Voted!", message: "We received your vote for " + songinfo });
+
 			$.mobile.loading("show", { textVisible: false });
 			if (!config.isDirect()) {
 				evt.preventDefault();
