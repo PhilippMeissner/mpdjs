@@ -344,8 +344,6 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 				}
       }
 		},
-    // Assign this function to any of your button to test whether it gets
-    // picked up from this file.
     testFunction: function(evt) {
       console.log("[/resources/views/PlayListView.js] testFunction called");
       // Call listAll and pass a callback-function (alert)
