@@ -21,7 +21,7 @@ define(function() {
         {href: "albums", label: "Albums"},
         {href: "search", label: "Song Search"},
         {href: "settings", label: "Settings"},
-				{href: "test1", label: "Test1"}
+				{href: "admin", label: "Admin"}
 	];
 
 	var connectionsMenuItem = {href: "connections", label: "Connections"};

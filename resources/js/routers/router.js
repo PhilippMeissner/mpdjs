@@ -30,7 +30,7 @@ define([
 	'views/SongSearchView',
 	'views/ConnectionListView',
 	'views/SettingsView',
-	'views/testView',
+	'views/adminView',
 	'uiconfig',
 	'mpd/MPDClient',
 	'util/MessagePopup',
@@ -52,7 +52,7 @@ function(
 	SongSearchView,
 	ConnectionListView,
 	SettingsView,
-	testView,
+	adminView,
 	config,
 	MPDClient,
 	MessagePopup
@@ -190,9 +190,17 @@ function(
 			this.on("route:settings", function() {
 				this.changePage(new SettingsView({}));
 			});
-			this.on("route:test1", function() {
-				this.changePage(new testView());
+			this.on("route:admin", function() {
+				this.connectIfRequired(function(proceed) {
+					if (!proceed) return;
+					this.fetchAdmin();
+				}.bind(this));
 			});
+
+			/*this.on("route:test1", function() {
+				this.changePage(new adminView());
+			});
+			*/
 			Backbone.history.start();
 			var checkScroll = function(evt) {
 				var activePage = $(':mobile-pagecontainer').pagecontainer('getActivePage');
@@ -234,20 +242,44 @@ function(
 				});
 			}.bind(this));
 		},
-		testqwe: function(statusJSON) {
+		fetchAdmin: function(statusJSON) {
 			this.checkForConnection(function() {
-				this.navigate("test1", {replace: true});
+				this.navigate("admin", {replace: true});
 				if (this.currentView) {
 					this.currentView.close();
 					this.currentView.remove();
 					this.currentView.unbind();
 				}
-				var playlist = new testView();
+				var playlist = new PlayList();
+				$.mobile.loading("show", { textVisible: false });
+				playlist.fetch({
+					success: function(collection, response, options) {
+								$.mobile.loading("hide");
+						//this.currentView = new PlayListView({playlist: collection});
+						this.currentView = new adminView({playlist: collection});
+						this.changePage(this.currentView);
+					}.bind(this),
+					error: function(collection, xhr, options) {
+								$.mobile.loading("hide");
+						console.log("get playlist failed :"+xhr.status);
+					}
+				});
+			}.bind(this));
+		},
+		testqwe: function(statusJSON) {
+			this.checkForConnection(function() {
+				this.navigate("admin", {replace: true});
+				if (this.currentView) {
+					this.currentView.close();
+					this.currentView.remove();
+					this.currentView.unbind();
+				}
+				var playlist = new adminView();
 				$.mobile.loading("show", { textVisible: false });
 				playlist.fetch({
 					success: function(collection, response, options) {
 		        		$.mobile.loading("hide");
-						this.currentView = new testView({})
+						this.currentView = new adminView({})
 						this.changePage(this.currentView);
 					}.bind(this),
 					error: function(collection, xhr, options) {
@@ -314,7 +346,7 @@ function(
 			'search': 'search',
 			'connections': 'connections',
 			'settings': 'settings',
-			'test1' : 'test1',
+			'admin' : 'admin',
 			'': config.getStartPage()
 		}
 	});

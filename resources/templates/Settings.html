@@ -1,13 +1,13 @@
 <div data-role="content">
-	<div data-role="collapsible" data-collapsed="true" data-inset="false"> 
-		<h3>Update</h3> 
+	<div data-role="collapsible" data-collapsed="true" data-inset="false">
+		<h3>Update</h3>
 		<input id="update" value="Update DB" type="button" data-mini="true">
-	</div>	
-	<div data-role="collapsible" data-collapsed="true" data-inset="false"> 
-		<h3>Random Playlist</h3> 
+	</div>
+	<div data-role="collapsible" data-collapsed="true" data-inset="false">
+		<h3>Random Playlist</h3>
 		<label><input id="randomByType" type="checkbox" <% if (randomPlaylistConfig.enabled) { %> checked <% } %>>Random Playlist by type</label>
-	</div>	
-	<div data-role="collapsible" data-collapsed="true" data-inset="false"> 
+	</div>
+	<div data-role="collapsible" data-collapsed="true" data-inset="false">
 		<h3>Start Page</h3>
 		<select id="startPage">
 			<option value="playlist" <% if (startPage === "playlist") { %> selected="true" <% } %>>Play List</option>
@@ -16,7 +16,7 @@
 			<option value="search" <% if (startPage === "search") { %> selected="true" <% } %>>Song Search</option>
 			<% if (window.cordova) { %>
 				<option value="connections" <% if (startPage === "connections") { %> selected="true" <% } %>>Connections</option>
-			<% } %>	
+			<% } %>
 		</select>
-	</div>	
+	</div>
 </div>

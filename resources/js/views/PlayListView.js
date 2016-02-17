@@ -464,8 +464,10 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 			} else {
 				status = JSON.parse(data);
 			}
+
 			this.state = status.state;
 			this.volume = status.volume;
+			/*
 			if (status.state === "play") {
 				$("#playPause").val('Pause');
 				$("#playPause").button('option', {icon : "pauseIcon" });
@@ -475,6 +477,7 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 				$("#playPause").button('option', {icon : "playIcon" });
 				$("#playPause").button("refresh");
 			}
+
 			if (status.currentsong && (status.state === "play" || status.state === "pause")) {
 				if (!this.volumeSet) {
 					var volume = parseInt(status.volume);
@@ -484,9 +487,9 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 						this.volumeSet = true;
 					}
 				}
-
+				*/
+				if (status.currentsong && (status.state === "play" || status.state === "pause")) {
 				// Check if song changed since last query
-
 				if(status.songid != this.lastSong) {
 					// Initial start
 					if (this.lastSong == "-1") {
@@ -516,17 +519,7 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 						// Reload window to update UI (remove old entry from list)
 						window.location.reload();
 					}
-					// lastSong changed --> We tell others about it.
-					// Do it like this:
-					// Request for mpdHandler -> Songhandler.deleteEntry(songid)
-					// MPD does not need to get called, because song gets consumed+priority therefore removed.
-					//console.log("ID Changed from " + this.lastSong + " to " + status.songid);
-					//this.lastSong = status.songid;
 				}
-
-
-
-
 
 				//console.log(status.currentsong);
         var fullTime = status.time.split(":", 2);
