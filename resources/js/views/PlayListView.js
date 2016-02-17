@@ -384,7 +384,7 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 			var songid = $(evt.target).closest("a").data("songid");
 			var songinfo = $(evt.target).closest("a").attr("id");
 
-			$.growl.notice({ title: "Voted!", message: "We received your vote for " + songinfo });
+			//$.growl.notice({ title: "Voted!", message: "We received your vote for " + songinfo });
 
 			$.mobile.loading("show", { textVisible: false });
 			if (!config.isDirect()) {
@@ -397,7 +397,7 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 					datatype: "text",
 					success: function(data, textStatus, jqXHR) {
 						$.mobile.loading("hide");
-						console.log("Success!");
+						$.growl.notice({ title: "Voted!", message: "We received your vote for " + songinfo });
 					}.bind(this),
 					error: function(jqXHR, textStatus, errorThrown) {
 						$.mobile.loading("hide");
