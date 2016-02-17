@@ -384,8 +384,6 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 			var songid = $(evt.target).closest("a").data("songid");
 			var songinfo = $(evt.target).closest("a").attr("id");
 
-			//$.growl.notice({ title: "Voted!", message: "We received your vote for " + songinfo });
-
 			$.mobile.loading("show", { textVisible: false });
 			if (!config.isDirect()) {
 				evt.preventDefault();
