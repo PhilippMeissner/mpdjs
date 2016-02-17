@@ -45,3 +45,7 @@
 .ui-header {
     height: 47px;
 }
+
+.ui-bar, .ui-body {
+	padding: 0;
+}
