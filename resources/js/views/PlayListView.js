@@ -381,6 +381,7 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
         if (c.indexOf(nameEQ) == 0) cookie = c.substring(nameEQ.length,c.length);
     	}
 
+			var clickedItem = $(evt.target).closest("li");
 			var songid = $(evt.target).closest("a").data("songid");
 			var songinfo = $(evt.target).closest("a").attr("id");
 
@@ -396,6 +397,7 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 					success: function(data, textStatus, jqXHR) {
 						$.mobile.loading("hide");
 						$.growl.notice({ title: "Voted!", message: "We received your vote for " + songinfo });
+						$(clickedItem).fadeTo( "slow", 0.5 );
 					}.bind(this),
 					error: function(jqXHR, textStatus, errorThrown) {
 						$.mobile.loading("hide");
