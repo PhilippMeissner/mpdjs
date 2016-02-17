@@ -107,7 +107,7 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 				$("#editButton").button("refresh");
 				this.playlist.each(function(song) {
 					// Editing
-					$("#playingList").append('<li data-icon="minusIcon"><a href="#playlist" id="'+song.get("id")+'"><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></a></li>');
+					$("#playingList").append('<li data-icon="minusIcon"><a href="#mimaadmin" id="'+song.get("id")+'"><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></a></li>');
 				});
 			}
 			$("#playingList").listview('refresh');
@@ -277,6 +277,7 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 						this.fetchPlayList();
 					}.bind(this));
 				} else {
+					console.log("remove song");
 					$.ajax({
 						url: config.getBaseUrl()+"/music/playlist/"+evt.target.id,
 						type: "DELETE",
@@ -299,12 +300,12 @@ function($, Backbone, _, PlayList, mobile, config, BaseView, MPDClient, template
 			$.mobile.loading("show", { textVisible: false });
 			this.playlist.fetch({
 				success: function(collection, response, options) {
-		        	$.mobile.loading("hide");
+		      $.mobile.loading("hide");
 					this.playlist.reset(collection.toJSON());
 					$("#playingList li").remove();
 					this.playlist.each(function(song) {
 						if (this.editing) {
-							$("#playingList").append('<li data-icon="minusIcon"><a href="#playlist" id="'+song.get("id")+'"><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></a></li>');
+							$("#playingList").append('<li data-icon="minusIcon"><a href="#mimaadmin" id="'+song.get("id")+'"><p style="white-space:normal">'+song.get("artist")+' : '+song.get("title")+'<span class="ui-li-count">'+song.get("time")+'</span></p></a></li>');
 						} else {
 							console.log("fetchPlayList re-order playlinglist");
 							// Check what PlayList.html uses and copy the layout accordingly.
