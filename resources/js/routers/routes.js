@@ -15,13 +15,14 @@
 * DEALINGS IN THE SOFTWARE.
 */
 define(function() {
+	// Items listed here are shown within the navigation-popup
 	var menuItems = [
         {href: "playlist", label: "Playlist"},
         {href: "artists", label: "Artists"},
         {href: "albums", label: "Albums"},
         {href: "search", label: "Song Search"},
-        {href: "settings", label: "Settings"},
-				{href: "admin", label: "Admin"}
+        //{href: "settings", label: "Settings"},
+				//{href: "mimaadmin", label: "Admin"}
 	];
 
 	var connectionsMenuItem = {href: "connections", label: "Connections"};

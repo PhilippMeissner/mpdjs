@@ -244,7 +244,7 @@ function(
 		},
 		fetchAdmin: function(statusJSON) {
 			this.checkForConnection(function() {
-				this.navigate("admin", {replace: true});
+				this.navigate("mimaadmin", {replace: true});
 				if (this.currentView) {
 					this.currentView.close();
 					this.currentView.remove();
@@ -346,7 +346,7 @@ function(
 			'search': 'search',
 			'connections': 'connections',
 			'settings': 'settings',
-			'admin' : 'admin',
+			'mimaadmin' : 'admin',
 			'': config.getStartPage()
 		}
 	});
