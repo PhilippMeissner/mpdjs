@@ -34,7 +34,8 @@ define([
 	'uiconfig',
 	'mpd/MPDClient',
 	'util/MessagePopup',
-	'applewatch/AppleWatchUtil'
+	'applewatch/AppleWatchUtil',
+	'../jquery.growl'
 	],
 function(
 	$,
@@ -55,7 +56,8 @@ function(
 	adminView,
 	config,
 	MPDClient,
-	MessagePopup
+	MessagePopup,
+	growl
 ) {
 	window.onerror = function (errorMsg, url, lineNumber, column, errorObj) {
     	console.log('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber + ' Column: ' + column + ' StackTrace: ' +  errorObj);
@@ -85,7 +87,8 @@ function(
 						dataType: "text",
 						success: function(data, textStatus, jqXHR) {
 							$.mobile.loading("hide");
-							this.fetchPlayList();
+							//this.fetchPlayList();
+							$.growl.notice({ title: "Song received!", message: "Your Song has been added. Remember to vote for it!" });
 						}.bind(this),
 						error: function(jqXHR, textStatus, errorThrown) {
 							$.mobile.loading("hide");
@@ -109,7 +112,8 @@ function(
 						dataType: "text",
 						success: function(data, textStatus, jqXHR) {
 							$.mobile.loading("hide");
-							this.fetchPlayList();
+							//this.fetchPlayList();
+							$.growl.notice({ title: "Song received", message: "Your Song has been added. Remember to vote for it!" });
 						}.bind(this),
 						error: function(jqXHR, textStatus, errorThrown) {
 							$.mobile.loading("hide");
@@ -197,10 +201,6 @@ function(
 				}.bind(this));
 			});
 
-			/*this.on("route:test1", function() {
-				this.changePage(new adminView());
-			});
-			*/
 			Backbone.history.start();
 			var checkScroll = function(evt) {
 				var activePage = $(':mobile-pagecontainer').pagecontainer('getActivePage');
@@ -261,29 +261,6 @@ function(
 					}.bind(this),
 					error: function(collection, xhr, options) {
 								$.mobile.loading("hide");
-						console.log("get playlist failed :"+xhr.status);
-					}
-				});
-			}.bind(this));
-		},
-		testqwe: function(statusJSON) {
-			this.checkForConnection(function() {
-				this.navigate("admin", {replace: true});
-				if (this.currentView) {
-					this.currentView.close();
-					this.currentView.remove();
-					this.currentView.unbind();
-				}
-				var playlist = new adminView();
-				$.mobile.loading("show", { textVisible: false });
-				playlist.fetch({
-					success: function(collection, response, options) {
-		        		$.mobile.loading("hide");
-						this.currentView = new adminView({})
-						this.changePage(this.currentView);
-					}.bind(this),
-					error: function(collection, xhr, options) {
-		        		$.mobile.loading("hide");
 						console.log("get playlist failed :"+xhr.status);
 					}
 				});
