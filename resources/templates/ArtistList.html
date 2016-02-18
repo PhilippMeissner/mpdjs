@@ -7,7 +7,7 @@
    	</table>
 	<ul id="artistList" data-role="listview" data-filter="true" data-input="#artistlistFilter">
 	<% _.each(artists, function(artist) { %>
-		<li data-icon="arrow-r"><a href="#albums/<%= encodeURIComponent(artist.name) %>"><p style="white-space:normal"><%= artist.name %></p></a></li> 
+		<li class='addSong' data-icon="arrow-r"><a href="#albums/<%= encodeURIComponent(artist.name) %>"><p style="white-space:normal"><%= artist.name %></p></a></li>
 	<% }); %>
 	</ul>
 </div>

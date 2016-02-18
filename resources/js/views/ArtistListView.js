@@ -24,6 +24,10 @@ function($, Backbone, _, BaseView, template){
 	var View = BaseView.extend({
 		events: function() {
 		    return _.extend({}, BaseView.prototype.events, {
+					"click .addSong": function(evt) {
+						var clickedItem = $(evt.target).closest("li");
+						$(clickedItem).fadeTo( "slow", 0.5 );
+					}
 		    });
 		},
 		initialize: function(options) {

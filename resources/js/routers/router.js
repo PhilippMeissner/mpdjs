@@ -73,6 +73,7 @@ function(
 	        });
 	        this.firstPage = true;
 	        this.on("route:addsong", function(song) {
+						console.log("route:addsong");
 				$.mobile.loading("show", { textVisible: false });
 				if (config.isDirect()) {
 					MPDClient.addSongToPlayList(decodeURIComponent(atob(song)), function() {
@@ -98,6 +99,7 @@ function(
 				}
 	        });
 	        this.on("route:addalbum", function(album, artist) {
+						console.log("route:addalbum");
 				$.mobile.loading("show", { textVisible: false });
 				if (config.isDirect()) {
 					MPDClient.addAlbumToPlayList(album, artist, function() {
